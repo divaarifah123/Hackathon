@@ -3,15 +3,18 @@ import { useStore } from '../lib/store.jsx'
 
 const NAV = [
   { id: 'dashboard', label: 'Dashboard', icon: 'grid' },
+  { id: 'calls', label: 'Calls', icon: 'phone' },
   { id: 'appointments', label: 'Appointments', icon: 'calendar' },
-  { id: 'calls', label: 'Call Detail', icon: 'phone' },
-  { id: 'alerts', label: 'Owner Alerts', icon: 'bell' },
+  { id: 'callbacks', label: 'Callbacks', icon: 'callback' },
   { id: 'settings', label: 'Settings', icon: 'settings' },
 ]
 
 export default function Sidebar({ active }) {
   const { calls } = useStore()
-  const alertCount = calls.filter((c) => c.triage.escalateToOwner && c.status !== 'resolved' && !c.ownerAcknowledged).length
+  // Callers who need a person soon: urgent, unreachable, or about to go elsewhere.
+  const needsYou = calls.filter(
+    (c) => c.status !== 'resolved' && c.isLatestFromCaller && (c.triage.level === 'urgent' || !c.contact.ok || c.triage.atRisk),
+  ).length
 
   return (
     <nav className="sidebar" aria-label="Main">
@@ -25,7 +28,7 @@ export default function Sidebar({ active }) {
             <a href={`#/${item.id}`} className={active === item.id ? 'active' : ''} title={item.label}>
               <Icon name={item.icon} />
               <span className="nav-label">{item.label}</span>
-              {item.id === 'alerts' && alertCount > 0 && <span className="nav-badge">{alertCount}</span>}
+              {item.id === 'callbacks' && needsYou > 0 && <span className="nav-badge">{needsYou}</span>}
             </a>
           </li>
         ))}

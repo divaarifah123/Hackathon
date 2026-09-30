@@ -34,11 +34,13 @@ export function StatusBadge({ status }) {
     pending: 'Pending',
     reschedule: 'Reschedule',
     cancelled: 'Cancelled',
+    refilled: 'Slot refilled',
   }
   return <span className={`badge status-${status}`}>{labels[status] || status}</span>
 }
 
 export function Avatar({ name, size }) {
+  if (!name) return <span className={`avatar unknown ${size || ''}`}>?</span>
   const initials = name
     .split(' ')
     .map((p) => p[0])

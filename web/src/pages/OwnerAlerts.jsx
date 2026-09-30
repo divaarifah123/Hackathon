@@ -3,17 +3,18 @@ import { sortByPriority, formatWait } from '../lib/triage.js'
 import { go } from '../lib/router.js'
 import { PageHeader, JadeLive, UrgencyBadge, Card, Flags, Empty, formatTime } from '../components/ui.jsx'
 import Icon from '../components/Icon.jsx'
+import { PhoneLine, CallBackButton, displayName } from '../components/Contact.jsx'
 
 export default function OwnerAlerts() {
   const { calls, activity, settings, dispatch } = useStore()
 
   const matchesRule = (c) => {
-    if (settings.escalationRule === 'urgent_only') return c.triage.level === 'urgent'
-    if (settings.escalationRule === 'all_today') return c.triage.level !== 'routine' || c.triage.escalateToOwner
+    if (settings.notifications.escalationRule === 'urgent_only') return c.triage.level === 'urgent'
+    if (settings.notifications.escalationRule === 'all_today') return c.triage.level !== 'routine' || c.triage.escalateToOwner
     return c.triage.escalateToOwner
   }
 
-  const open = sortByPriority(calls.filter((c) => c.status !== 'resolved' && matchesRule(c)))
+  const open = sortByPriority(calls.filter((c) => c.status !== 'resolved' && c.isLatestFromCaller && matchesRule(c)))
   const needsOwner = open.filter((c) => !c.ownerAcknowledged)
   const acknowledged = open.filter((c) => c.ownerAcknowledged)
   const resolved = calls
@@ -53,10 +54,8 @@ export default function OwnerAlerts() {
               <div className="stack tight">
                 {acknowledged.map((c) => (
                   <EscalationItem key={c.id} call={c}>
-                    <a className="btn ghost" href={`tel:${c.phone.replace(/\s/g, '')}`}>
-                      <Icon name="phone" size={15} /> Call {c.caller.split(' ')[0]}
-                    </a>
-                    <button className="btn success" onClick={() => dispatch({ type: 'resolve', id: c.id })}>
+                    <CallBackButton call={c} className="btn ghost" />
+                    <button className="btn success" onClick={() => dispatch({ type: 'resolve', id: c.relatedIds })}>
                       Mark resolved
                     </button>
                   </EscalationItem>
@@ -74,7 +73,7 @@ export default function OwnerAlerts() {
                   <li key={c.id}>
                     <Icon name="check" size={14} />
                     <div>
-                      <strong>{c.caller}</strong>
+                      <strong>{displayName(c)}</strong>
                       <p className="muted small">{c.reason}</p>
                     </div>
                   </li>
@@ -109,9 +108,9 @@ function EscalationItem({ call, children }) {
     <article className={`escalation level-${call.triage.level}`}>
       <div className="escalation-top">
         <div>
-          <h3>{call.caller}</h3>
+          <h3>{displayName(call)}</h3>
           <span className="muted small">
-            {call.phone} · {formatWait(call.receivedAt)}
+            <PhoneLine call={call} /> · {formatWait(call.receivedAt)}
           </span>
         </div>
         <UrgencyBadge level={call.triage.level} />
