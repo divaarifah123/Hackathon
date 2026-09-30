@@ -3,9 +3,10 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  // Relative asset paths so the build works under a sub-path like
-  // https://divaarifah123.github.io/Hackathon/
+  // App source lives in web/. The repo root only holds a redirect to docs/,
+  // so GitHub Pages works whether its folder is set to "/ (root)" or "/docs".
+  root: 'web',
+  // Relative asset paths so the build works under /Hackathon/ (and /Hackathon/docs/).
   base: './',
-  // GitHub Pages ("Deploy from a branch") serves this folder: pick /docs as the folder.
-  build: { outDir: 'docs', emptyOutDir: true },
+  build: { outDir: '../docs', emptyOutDir: true },
 })

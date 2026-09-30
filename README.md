@@ -25,7 +25,7 @@ npm run build    # outputs to docs/
 
 **https://divaarifah123.github.io/Hackathon/**
 
-Pages is set to *Deploy from a branch* → `claude/jolly-newton-nvuovm` → **`/docs`** folder. It serves the built files in `docs/`, not the source, so after changing code:
+Pages is set to *Deploy from a branch* → `claude/jolly-newton-nvuovm`. Either folder works: `/docs` serves the built app directly, and `/ (root)` has an `index.html` that redirects into `docs/`. The app source lives in `web/`; the site is the built copy in `docs/`, so after changing code:
 
 ```bash
 npm run build
@@ -36,9 +36,9 @@ GitHub redeploys within a minute or two (progress shows under the repo's **Actio
 
 ## How it fits together
 
-- `src/data/mockData.js`: sample calls in the shape we expect from Jade. Replace with a fetch from Jade's API when it's available. `CLINIC_NAME` lives here too.
-- `src/lib/triage.js`: **the core idea.** Turns a raw call into `{ level, flags, escalateToOwner }` using keyword rules over the caller's words and Jade's summary. It's the one place to tune what counts as urgent (or swap in an LLM classifier later).
-- `src/lib/store.jsx`: app state (React context + reducer). Actions: assign, resolve, acknowledge, book, add note. Saved to `localStorage` so the demo survives a refresh; use **Settings → Reset demo** before presenting.
-- `src/pages/*`: one file per screen. `src/components/*`: shared UI.
+- `web/src/data/mockData.js`: sample calls in the shape we expect from Jade. Replace with a fetch from Jade's API when it's available. `CLINIC_NAME` lives here too.
+- `web/src/lib/triage.js`: **the core idea.** Turns a raw call into `{ level, flags, escalateToOwner }` using keyword rules over the caller's words and Jade's summary. It's the one place to tune what counts as urgent (or swap in an LLM classifier later).
+- `web/src/lib/store.jsx`: app state (React context + reducer). Actions: assign, resolve, acknowledge, book, add note. Saved to `localStorage` so the demo survives a refresh; use **Settings → Reset demo** before presenting.
+- `web/src/pages/*`: one file per screen. `web/src/components/*`: shared UI.
 
-No UI framework or router dependency, just React + Vite + plain CSS (`src/styles.css`, colour tokens at the top).
+No UI framework or router dependency, just React + Vite + plain CSS (`web/src/styles.css`, colour tokens at the top).
