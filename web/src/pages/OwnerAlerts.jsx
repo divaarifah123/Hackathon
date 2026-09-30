@@ -6,15 +6,9 @@ import Icon from '../components/Icon.jsx'
 import { PhoneLine, CallBackButton, displayName } from '../components/Contact.jsx'
 
 export default function OwnerAlerts() {
-  const { calls, activity, settings, dispatch } = useStore()
+  const { calls, activity, dispatch } = useStore()
 
-  const matchesRule = (c) => {
-    if (settings.notifications.escalationRule === 'urgent_only') return c.triage.level === 'urgent'
-    if (settings.notifications.escalationRule === 'all_today') return c.triage.level !== 'routine' || c.triage.escalateToOwner
-    return c.triage.escalateToOwner
-  }
-
-  const open = sortByPriority(calls.filter((c) => c.status !== 'resolved' && c.isLatestFromCaller && matchesRule(c)))
+  const open = sortByPriority(calls.filter((c) => c.status !== 'resolved' && c.isLatestFromCaller && c.triage.escalateToOwner))
   const needsOwner = open.filter((c) => !c.ownerAcknowledged)
   const acknowledged = open.filter((c) => c.ownerAcknowledged)
   const resolved = calls

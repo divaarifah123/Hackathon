@@ -398,12 +398,4 @@ export const defaultSettings = {
     useCallerId: true,
     followUpAtRisk: true,
   },
-  notifications: {
-    ownerPhone: '0400 000 000',
-    sms: true,
-    email: true,
-    dailySummary: true,
-    escalationRule: 'urgent_and_complaints',
-    quietHours: true,
-  },
 }

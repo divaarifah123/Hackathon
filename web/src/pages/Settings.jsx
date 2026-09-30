@@ -37,12 +37,12 @@ export default function Settings() {
     setSaved(true)
   }
 
-  const { reminders, messages, rescheduling, callbacks, notifications } = draft
+  const { reminders, messages, rescheduling, callbacks } = draft
   const remindersOff = !reminders.auto
 
   return (
     <div className="settings">
-      <PageHeader title="Settings" subtitle="Manage how Jade handles appointment reminders, rescheduling, callbacks, and notifications." />
+      <PageHeader title="Settings" subtitle="Manage how Jade handles appointment reminders, rescheduling, and callbacks." />
 
       {/* 1 — Appointment reminders */}
       <SettingsCard title="Appointment reminders" subtitle="Automatically remind patients about upcoming appointments.">
@@ -149,36 +149,6 @@ export default function Settings() {
         </SettingRow>
         <SettingRow title="Win back patients who go elsewhere" hint={`If a caller says they'll try another clinic, Jade texts them the earliest available slot.`}>
           <Toggle label="Win back patients" checked={callbacks.followUpAtRisk} onChange={(v) => set('callbacks', 'followUpAtRisk', v)} />
-        </SettingRow>
-      </SettingsCard>
-
-      {/* 5 — Notifications */}
-      <SettingsCard title="Notifications" subtitle="What the owner hears about, and how.">
-        <SettingRow title="Owner's mobile" hint="Used for urgent text alerts.">
-          <input className="input" inputMode="tel" value={notifications.ownerPhone} onChange={(e) => set('notifications', 'ownerPhone', e.target.value)} />
-        </SettingRow>
-        <SettingRow title="Text me urgent calls" hint="Sent as soon as Jade flags a call.">
-          <Toggle label="Text me urgent calls" checked={notifications.sms} onChange={(v) => set('notifications', 'sms', v)} />
-        </SettingRow>
-        <SettingRow title="Email me escalations" hint="One email per escalated call, with Jade's summary.">
-          <Toggle label="Email me escalations" checked={notifications.email} onChange={(v) => set('notifications', 'email', v)} />
-        </SettingRow>
-        <SettingRow title="Morning summary" hint="Overnight and weekend calls in one email at 7:30am.">
-          <Toggle label="Morning summary" checked={notifications.dailySummary} onChange={(v) => set('notifications', 'dailySummary', v)} />
-        </SettingRow>
-        <SettingRow title="Which calls reach the owner" hint="Controls the Owner alerts board.">
-          <Select
-            value={notifications.escalationRule}
-            onChange={(v) => set('notifications', 'escalationRule', v)}
-            options={[
-              ['urgent_only', 'Urgent calls only'],
-              ['urgent_and_complaints', 'Urgent calls and complaints'],
-              ['all_today', 'Anything needing a same-day reply'],
-            ]}
-          />
-        </SettingRow>
-        <SettingRow title="Quiet hours" hint="Between 9pm and 7am, only urgent calls notify you.">
-          <Toggle label="Quiet hours" checked={notifications.quietHours} onChange={(v) => set('notifications', 'quietHours', v)} />
         </SettingRow>
       </SettingsCard>
 

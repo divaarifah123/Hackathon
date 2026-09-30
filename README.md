@@ -10,7 +10,7 @@ Hackathon project. When Jade (the AI receptionist) takes a call, the details lan
 | `#/calls` | **Calls** | Every call Jade took; `#/calls/:id` opens the detail with transcript, booking and notes |
 | `#/appointments` | **Appointments** | Bookings table + cancellations to fill + booking requests |
 | `#/callbacks` | **Callbacks** | One queue grouped by what each caller needs, with due/overdue times |
-| `#/settings` | **Settings** | Reminders, reminder messages, rescheduling, callbacks, notifications |
+| `#/settings` | **Settings** | Reminders, reminder messages, rescheduling, callbacks |
 | `#/alerts` | **Owner alerts** | Only what needs the owner (linked from the dashboard header) |
 
 ## The "what about…" questions from the brief
