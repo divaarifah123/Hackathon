@@ -18,8 +18,21 @@ Hackathon project. When Jade (the AI receptionist) takes a call, the details lan
 npm install
 npm run dev      # http://localhost:5173
 npm test         # triage rule tests
-npm run build
+npm run build    # outputs to docs/
 ```
+
+## Live site (GitHub Pages)
+
+**https://divaarifah123.github.io/Hackathon/**
+
+Pages is set to *Deploy from a branch* → `claude/jolly-newton-nvuovm` → **`/docs`** folder. It serves the built files in `docs/`, not the source, so after changing code:
+
+```bash
+npm run build
+git add -A && git commit -m "Rebuild site" && git push
+```
+
+GitHub redeploys within a minute or two (progress shows under the repo's **Actions** tab).
 
 ## How it fits together
 
